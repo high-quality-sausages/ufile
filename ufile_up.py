@@ -14,24 +14,26 @@ config.set_default(expires=60)
 # 设置上传文件是否校验md5
 config.set_default(md5=True)
 
-public_bucket = 'high-quality-sausages'  # 公共空间名称
-# private_bucket = 'money666' # 私有空间名称
-localfile = '/Users/money666/Desktop/shell/ufile/111.txt'  # 本地文件名
+public_bucket = 'high-quality-sausages'  # 公共空间名称(不加后缀)
+# private_bucket = 'money666' # 私有空间名称(不加后缀)
+localfile = './111.txt'  # 本地文件名
 put_key = '111.txt'  # 上传文件在空间中的名称
 # region = 'cn-sh2'
 public_key = 'TOKEN_f3e9f54e-6238-4fee-88d1-740aeb8021d9'
 private_key = '52e90ce4-13c8-4f4e-bdb8-efb403941de0'
 
 
-def put_file(localfile: str):
-    # 将文件上传至ufile
+def put_file(localfile: str, put_key: str):
+    # 传入本地文件路径、文件云上空间名称，将文件上传至ufile
     putufile_handler = filemanager.FileManager(public_key, private_key)
     # 普通上传文件至公共空间
     ret, resp = putufile_handler.putfile(
         public_bucket, put_key, localfile, header=None)
     assert resp.status_code == 200
+    download_addr = 'http://high-quality-sausages.cn-sh2.ufileos.com/'+put_key
+    return download_addr
 
 
 if __name__ == "__main__":
-    # put_file()
-    pass
+    a = put_file(localfile, put_key)
+    print(a)
